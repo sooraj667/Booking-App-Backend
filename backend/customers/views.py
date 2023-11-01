@@ -742,7 +742,13 @@ class WorkShopBooknow(APIView):
         cust_obj=Customer.objects.get(id=custid)
         workshop_obj.customers.add(cust_obj)
         workshop_obj.save()
-        WorkshopBooking.objects.create(customer=cust_obj,workshop=workshop_obj)
+        try:
+            booking_obj=WorkshopBooking.objects.get(workshop=workshop_obj,customer=cust_obj)
+            booking_obj.status="Confirmed"
+            booking_obj.save()
+            return Response({"message":"done"})
+        except:
+            WorkshopBooking.objects.create(customer=cust_obj,workshop=workshop_obj,status="Confirmed") 
        
         return Response({"message":"done"})
     
@@ -752,13 +758,13 @@ class CheckWorkshopBooked(APIView):
     def post(self,request): 
         workshopid=request.data.get("workshopid")
         custid=request.data.get("custid")
-        print(workshopid,"IVDE NOKK MYREEEEEEEEEEEEEEEEEEEEE")
+    
        
       
         workshop_obj=Workshop.objects.get(id=workshopid)
         cust_obj=Customer.objects.get(id=custid)
         try:
-            WorkshopBooking.objects.get(workshop=workshop_obj,customer_id=custid)
+            WorkshopBooking.objects.get(workshop=workshop_obj,customer_id=custid,status="Confirmed") 
             return Response({"message":"already-present"})
         except:
             return Response({"message":"not-present"})
@@ -779,11 +785,16 @@ class WorkShopBookNowWallet(APIView):
         
         workshop_obj.customers.add(cust_obj)
         workshop_obj.save()
-        WorkshopBooking.objects.create(customer=cust_obj,workshop=workshop_obj)
         cust_obj.wallet_amount-=workshop_obj.price
         cust_obj.save()
-       
-        return Response({"message":"done"})
+        try:
+            booking_obj=WorkshopBooking.objects.get(workshop=workshop_obj,customer=cust_obj)
+            booking_obj.status="Confirmed"
+            booking_obj.save()
+            return Response({"message":"done"})
+        except:
+            WorkshopBooking.objects.create(customer=cust_obj,workshop=workshop_obj)
+            return Response({"message":"done"}) 
     
 class GetAllWorkshops(APIView):
   
@@ -821,10 +832,15 @@ class CancelWorkshopBooking(APIView):
         workshop_obj=Workshop.objects.get(id=id)
         cust_obj=Customer.objects.get(id=cust_id)
         workshop_obj.customers.remove(cust_obj)
+        workshop_obj.save()
+       
 
         ws_booking_obj=WorkshopBooking.objects.get(workshop=workshop_obj,customer=cust_obj)
         ws_booking_obj.status="Cancelled"
         ws_booking_obj.save()
+        cust_obj.wallet_amount+=workshop_obj.price
+        cust_obj.save() 
+       
        
         
        
