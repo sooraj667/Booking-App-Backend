@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-zikroid8_a*18k$ygqei*oi_k65k+z-&x(7b1zjn^kle^&1-gw"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = False  
 
 ALLOWED_HOSTS = ['*']
 

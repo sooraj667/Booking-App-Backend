@@ -40,6 +40,8 @@ urlpatterns = [
     path("get-currentuser-attended-workshops/",GetAttendedWorkshops.as_view(),name="GetAttendedWorkshops"),
     path("get-currentuser-cancelled-workshops/",GetCancelledWorkshops.as_view(),name="GetCancelledWorkshops"),
     path("gettopworkshop/",GetTopWorkshop.as_view(),name="GetTopWorkshop"),
+    path("check-if-blocked/",CheckIfBlocked.as_view(),name="CheckIfBlocked"),
+    path("resendotp/",ResendOTP.as_view(),name="ResendOTP"),
    
 
 

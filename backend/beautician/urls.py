@@ -30,7 +30,7 @@ urlpatterns = [
     path("video-call-link/",VideoCallLink.as_view(),name="VideoCallLink"),
     path("generate-roomid/",GenerateRoomId.as_view(),name="GenerateRoomId"),
     path("get-currentbeaut-completed-workshops/",GetBeautCompletedWorkshops.as_view(),name="GetBeautCompletedWorkshops"),
-
+     path("resendotp/",ResendOTP.as_view(),name="ResendOTP"),
 
 
     

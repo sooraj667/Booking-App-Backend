@@ -897,8 +897,39 @@ class GetTopWorkshop(APIView):
       
         
        
+class CheckIfBlocked(APIView):
+  
+    def post(self,request): 
+        cust=Customer.objects.get(id=request.data.get("id"))
+        if cust.isblocked:
+            return Response({"message":"blocked"})
         
-    
+        else:
+            return Response({"message":"notblocked"})
+        
+
+class ResendOTP(APIView):
+  
+    def post(self,request): 
+        cust=Customer.objects.get(email=request.data.get("email"))
+        otpobj=OTP.objects.filter(email=cust.email)
+        otpobj.delete()
+        otpvalue=generate_otp()
+        email=cust.email
+        OTP.objects.create(otp=otpvalue,email=email)
+      
+        subject = "OTP for registration in Groom UP"
+        message = f"Your OTP for registration is {otpvalue}.Please enter this otp to register."
+        recipient = email
+        send_mail(subject, 
+              message, settings.EMAIL_HOST_USER, [recipient], fail_silently=False)
+
+        return Response({"message":"success"})
+
+
 
         
        
+    
+
+        
