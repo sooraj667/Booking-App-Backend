@@ -146,7 +146,8 @@ class Booknow(APIView):
         custobj=Customer.objects.get(id=custid)
 
 
-        date_format = '%a %b %d %Y %H:%M:%S GMT%z (%Z)'
+        # date_format = '%a %b %d %Y %H:%M:%S GMT%z (%Z)'
+        date_format = '%a %b %d %Y %H:%M:%S (%Z)'
         parseddateandtime = datetime.strptime(date, date_format)
 
         
