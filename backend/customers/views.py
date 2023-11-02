@@ -13,6 +13,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 import random
 from rest_framework.serializers import Serializer
+from dateutil import parser
 
 
 def generate_otp():
@@ -145,13 +146,18 @@ class Booknow(APIView):
         beautobj=Beautician.objects.get(id=beautid)
         custobj=Customer.objects.get(id=custid)
 
+        # very first date format worked locally
+        # date_format = '%a %b %d %Y %H:%M:%S GMT%z (%Z)' 
 
-        # date_format = '%a %b %d %Y %H:%M:%S GMT%z (%Z)'
-        date_format = '%a %b %d %Y %H:%M:%S (%Z)'
-        parseddateandtime = datetime.strptime(date, date_format)
+        parseddate = parser.parse(date)
+
 
         
-        parseddate=parseddateandtime.date()
+        date_format = '%a %b %d %Y %H:%M:%S (%Z)'
+        # parseddateandtime = datetime.strptime(date, date_format)
+
+        
+        # parseddate=parseddateandtime.date()
      
         studioobj=Studio.objects.get(beautician=beautobj,place=studio)
 
