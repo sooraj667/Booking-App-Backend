@@ -149,7 +149,12 @@ class Booknow(APIView):
         # very first date format worked locally
         # date_format = '%a %b %d %Y %H:%M:%S GMT%z (%Z)' 
 
-        parseddate = parser.parse(date)
+
+        date_string_cleaned = date.split('(')[0].strip()
+        parseddateandtime = datetime.strptime(date_string_cleaned,"%a %b %d %Y %H:%M:%S GMT%z")
+        
+
+        
 
 
         
@@ -157,12 +162,12 @@ class Booknow(APIView):
         # parseddateandtime = datetime.strptime(date, date_format)
 
         
-        # parseddate=parseddateandtime.date()
+        parseddate=parseddateandtime.date()
      
         studioobj=Studio.objects.get(beautician=beautobj,place=studio)
 
         service_obj=Services.objects.get(name=servicename)
-        service_obj_req=Servicefees.objects.get(beautician=beautobj,service=service_obj)
+        service_obj_req=Servicefees.objects.get(beautician=beautobj,service=service_obj) 
 
         if typeofpayment=="wallet":
                 if custobj.wallet_amount<service_obj_req.servicefee:
