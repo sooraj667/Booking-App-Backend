@@ -597,7 +597,7 @@ class GetReviews(APIView):
         allreviews=Review.objects.filter(beautician=Beautician.objects.get(id=beautid))
         print(allreviews,"NOKKKKK")
         allreviews_serialized=Reviewserializer(allreviews,many=True)
-        if allreviews==[]:
+        if allreviews.count()==0:
             return Response({"message":"empty"})
         else:
             return Response({"message":"notempty","reviews":allreviews_serialized.data})
